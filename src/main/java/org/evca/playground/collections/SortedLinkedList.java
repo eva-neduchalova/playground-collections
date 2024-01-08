@@ -3,12 +3,14 @@ package org.evca.playground.collections;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.Spliterator;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class SortedLinkedList implements Collection<Integer> {
+public class SortedLinkedList implements Collection<Integer>, Queue<Integer> {
 
     private final LinkedList<Integer> data;
 
@@ -127,6 +129,45 @@ public class SortedLinkedList implements Collection<Integer> {
     public Stream<Integer> parallelStream() {
         return data.parallelStream();
     }
+
+
+    @Override
+    public boolean offer(Integer integer) {
+        return add(integer);
+    }
+
+    @Override
+    public Integer remove() {
+        if (data.isEmpty()) {
+            throw new NoSuchElementException("The queue is empty");
+        }
+        return data.removeFirst();
+    }
+
+    @Override
+    public Integer poll() {
+        if (data.isEmpty()) {
+            return null;
+        }
+        return data.removeFirst();
+    }
+
+    @Override
+    public Integer element() {
+        if (data.isEmpty()) {
+            throw new NoSuchElementException("The queue is empty");
+        }
+        return data.getFirst();
+    }
+
+    @Override
+    public Integer peek() {
+        if (data.isEmpty()) {
+            return null;
+        }
+        return data.getFirst();
+    }
+
 
     @Override
     public String toString() {
